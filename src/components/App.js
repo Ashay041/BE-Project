@@ -3,8 +3,6 @@ import Web3 from 'web3';
 import './App.css';
 import Meme from '../abis/Meme.json'
 
-
-
 /*
 const express = require('express')
 const app = express()
@@ -15,23 +13,12 @@ var upload = multer({ dest: 'uploads/' })
 const ipfsClient = require('ipfs-http-client')
 const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }) // leaving out the arguments will default to these values
 
-
 //functions
-
-
-
-
-
-
-
-
 class App extends Component {
-
   async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
   }
-
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
@@ -44,7 +31,6 @@ class App extends Component {
       window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
     }
   }
-
   async loadBlockchainData() {
     const web3 = window.web3
     // Load account
@@ -61,10 +47,8 @@ class App extends Component {
       window.alert('Smart contract not deployed to detected network.')
     }
   }
-
   constructor(props) {
     super(props)
-
     this.state = {
       memeHash: ``,
       memeHashagain: 'Qmen1Jdjgt1aqb3wxMNMBoH6ifu8GdUJZAW2kpt78KeMxU',
@@ -75,27 +59,21 @@ class App extends Component {
       hashval: '',
       value:'',
       textBoxValue: ''
-
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
   handleChange(event) {
     this.setState({value: event.target.value});
   }
-
   handleSubmit(event) {
     alert('A CID was submitted: ' + this.state.value);
     event.preventDefault();
 
   }
-
   myChangeHandler = (event) => {
     this.setState({textBoxValue: event.target.value});
-  }
-  
-  
+  }   
   captureFile = (event) => {
     event.preventDefault()
     const file = event.target.files[0]
@@ -106,13 +84,10 @@ class App extends Component {
       console.log('buffer', this.state.buffer)
     }
   }
-
   onSubmit = (event) => {
     event.preventDefault()
     console.log("Submitting file to ipfs...")
-    //var data = new Buffer(fs.readFileSync(req.file.path));
-
-    
+    //var data = new Buffer(fs.readFileSync(req.file.path));    
     ipfs.add(this.state.buffer, (error, result) => {
       console.log('Ipfs result', result)
       const memeHash = result[0].hash
@@ -121,17 +96,13 @@ class App extends Component {
         console.error(error)
         return
       }      
-        this.setState({hashval : memeHash})
-        
+       this.setState({hashval : memeHash})
+       //Add to blockchain 
        this.state.contract.methods.set(result[0].hash).send({ from: this.state.account }).then((r) => {
          return this.setState({ memeHash: result[0].hash })
-       })
-       
-    })
-
-    
+       })       
+    })    
   }
-
 
 //https://ipfs.infura.io/ipfs/QmahcS9oCxv1xy25Ayer7M6heYwKs9nGo7LJCvy2sUZCob
 //<img src={`https://ipfs.infura.io/ipfs/${this.state.memeHash}`} />
@@ -148,22 +119,16 @@ class App extends Component {
           >
             IPFS Image Upload Dapp With Ethereum Smart Contract
           </a>
-        </nav>
-        
+        </nav>        
         <div className="container-fluid mt-5">
           <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
-            
+            <main role="main" className="col-lg-12 d-flex text-center">            
               <div className="content mr-auto ml-auto">
                 <div className = "imagecontainer">
                   <a
                     href="http://www.dappuniversity.com/bootcamp"
                     target="_blank"
-                    rel="noopener noreferrer" >
-                      
-                   
-
-                  
+                    rel="noopener noreferrer" >                       
                   </a>
                   <p>&nbsp;</p>
                   <h1>Images</h1>
@@ -172,52 +137,31 @@ class App extends Component {
                     <input type='file' onChange={this.captureFile} />
                     <input type='submit' />
                   </form>
-
                   <p>&nbsp;</p>
                   <div className="filesec">
                     <p>IPFS-Hash: {this.state.hashval}</p>
-                      
                   </div>
                   <div className="Download">
                       <form onSubmit={this.handleSubmit}>
                         <label>
                           CID:
-                          
                           <input type='text' onChange={this.myChangeHandler} />
                         </label>
-                        
-                       
                     </form>
                     <form target="_blank" action={`https://ipfs.infura.io/ipfs/${this.state.textBoxValue}`}>
                               <input type="submit"  value="Go to Google" />
-                          </form>
-
-
-                    
-                    
-
-                    
+                    </form>
                     <a
                       href={`https://ipfs.infura.io/ipfs/${this.state.memeHash}`}
                       download >
-
                       <i className="fa fa-download" />
                     </a>
-
-                     {/* <a style={{display: "flex",justifyContent: "center",alignItems: "center",}}href={`https://ipfs.infura.io/ipfs/${this.state.memeHash}`} target="_blank"> text <button>Download</button></a> */}
-                      {/*<input type="text" value={this.state.value} onChange={this.handleChange} /> */}
-                    
-                      <p>&nbsp;</p>
- 
+                      {/* <a style={{display: "flex",justifyContent: "center",alignItems: "center",}}href={`https://ipfs.infura.io/ipfs/${this.state.memeHash}`} target="_blank"> text <button>Download</button></a> */}
+                      {/*<input type="text" value={this.state.value} onChange={this.handleChange} /> */}                    
+                      <p>&nbsp;</p> 
                       <img src={`https://ipfs.infura.io/ipfs/${this.state.memeHash}`}  />
-
                   </div>
-
-
-
-                </div>
-                
-
+                </div>             
               </div>
             </main>
           </div>
